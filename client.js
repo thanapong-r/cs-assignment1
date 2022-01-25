@@ -11,9 +11,8 @@ client.connect(PORT, HOST, function(){
 })
 
 client.on('data', function(data){
-    console.log('Server-DATA: ' + data)
+    console.log('fromServer: ' + data)
     sendline()
-    //client.destroy()
 })
 
 client.on('close', function(){
@@ -21,7 +20,7 @@ client.on('close', function(){
 })
 
 function sendline(){
-    var line = readline.question('DataSent: ')
+    var line = readline.question('toServer: ')
     if(line == 'Thank!'){
         client.end()
     }

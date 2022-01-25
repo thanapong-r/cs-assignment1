@@ -12,7 +12,7 @@ net.createServer(function (sock) {
         switch (state) {
             case 0:
                 if (data == 'Hello') {
-                    console.log('Client-DATA:' + data)
+                    console.log('fromClient:' + data)
                     sock.write('Hola')
                     state = 1 //wait for key
                     console.log('::'+ state)
@@ -20,7 +20,6 @@ net.createServer(function (sock) {
                 break
             case 1:
                 current_key = data
-                //sock.write('' + (db[current_key]))
                 for (i = 0; i < db.length; i++){
                     if(db[i] == current_key){
                         if(i==0){
@@ -40,18 +39,24 @@ net.createServer(function (sock) {
                     state = 3 //end                    
                 } else {
                     try {
+                        
                         let v = data.toUpperCase()
-                        if (!db[current_key]){
-                            db[current_key] = 0
-                            sock.write("" + db[current_key])
-                        }
-                            
-                        for (i = 0; i < db.length; i++) {
-                            if (db[i] == v) {
-                                sock.write("" + (db[i] + 1))
+                        for(i=0; i < db.length; i++){
+                            if (!db[i] == current_key){
+                                i = 0
+                                sock.write("" + i)
                             }
                         }
-                       
+
+                        for (i = 0; i < db.length; i++) {
+                            if (db[i] == v) {
+                                if(i=0){
+                                    sock.write("" + (i + 1))
+                                }else{
+                                    sock.write('' + i)
+                            }
+                        }
+                        }
                     } catch (e) {
                         sock.write('INVALID')
                     }
